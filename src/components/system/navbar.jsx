@@ -47,11 +47,11 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="p-2 bg-[rgba(225,225,225,0.1)] backdrop-blur-3xl sticky top-0 z-50">
+    <header className="p-2 dark:bg-zinc-900 bg-zinc-50 backdrop-blur-3xl sticky top-0 z-50">
       <div className="md:max-w-7xl mx-auto flex justify-between items-center">
         <Link
           href="/"
-          className="h-10 w-auto flex gap-2 items-center p-1 rounded-md hover:bg-[rgba(225,225,225,0.05)]"
+          className="h-10 w-auto flex gap-2 items-center p-1 rounded-md hover:bg-[rgba(225,225,225,0.05)] mr-3"
         >
           <Image
             src={ReviveEdge}
@@ -63,10 +63,10 @@ const Navbar = () => {
           <span className="md:block hidden whitespace-nowrap">Revive Edge</span>
         </Link>
 
-        <nav className="lg:flex hidden md:border-l md:border-slate-500 md:px-3 lg:flex-row flex-col flex-grow md:relative absolute md:w-auto w-full left-0 right-0 md:top-auto top-16 z-50 text-sm items-center">
+        <nav className="lg:flex hidden md:border-l md:border-zinc-500 md:px-3 lg:flex-row flex-col flex-grow md:relative absolute md:w-auto w-full left-0 right-0 md:top-auto top-16 z-50 text-sm items-center">
           <Link
             href="/"
-            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
           >
             Home
           </Link>
@@ -79,24 +79,24 @@ const Navbar = () => {
                   <ul className="grid gap-3 p-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                     <li className="row-span-3">
                       <NavigationMenuLink asChild>
-                        <a
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-slate-100/50 to-transparent p-4 no-underline outline-none focus:shadow-md"
+                        <Link
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-zinc-100/50 to-transparent p-4 no-underline outline-none focus:shadow-md"
                           href="/"
                         >
                           <div className="mb-2 mt-4 text-lg font-medium">
-                            Why Revive Edge?
+                            Why ReviveEdge?
                           </div>
                           <p className="text-sm leading-tight text-muted-foreground">
                             Break down. Click give up. Let the AI pull you back.
                           </p>
-                        </a>
+                        </Link>
                       </NavigationMenuLink>
                     </li>
                     {links.map((link) => (
                       <NavigationMenuLink asChild key={link.href}>
                         <Link
                           href={link.href}
-                          className="block space-y-1 rounded-md p-3 transition-colors hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+                          className="block space-y-1 rounded-md p-3 transition-colors hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
                         >
                           <div className="text-sm font-medium leading-none">
                             {link.title}
@@ -115,19 +115,19 @@ const Navbar = () => {
 
           <Link
             href="/pricing"
-            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
           >
             Pricing
           </Link>
           <Link
             href="/about"
-            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
           >
             About
           </Link>
           <Link
             href="/contact"
-            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+            className="lg:inline-flex lg:w-auto px-3 py-2 rounded text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
           >
             Contact
           </Link>
@@ -152,7 +152,7 @@ const Navbar = () => {
             {theme === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
           <Sheet>
-            <SheetTrigger className="w-10 h-10 md:hidden flex justify-center items-center hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)] rounded">
+            <SheetTrigger className="w-10 h-10 md:hidden flex justify-center items-center hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)] rounded">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -164,7 +164,7 @@ const Navbar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
               </svg>
             </SheetTrigger>
-            <SheetContent className="bg-white dark:bg-black border-l-slate-100/30">
+            <SheetContent className="bg-white dark:bg-black border-l-zinc-100/30">
               <SheetHeader className="text-left">
                 <SheetTitle>Menu</SheetTitle>
                 <SheetDescription>
@@ -176,7 +176,7 @@ const Navbar = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block space-y-1 rounded-md p-3 transition-colors hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+                    className="block space-y-1 rounded-md p-3 transition-colors hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
                   >
                     <div className="text-sm font-medium leading-none">
                       {link.title}
@@ -186,13 +186,13 @@ const Navbar = () => {
                     </p>
                   </Link>
                 ))}
-                <Link href="/pricing" className="p-3 rounded-md hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
+                <Link href="/pricing" className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
                   Pricing
                 </Link>
-                <Link href="/about" className="p-3 rounded-md hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
+                <Link href="/about" className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
                   About
                 </Link>
-                <Link href="/contact" className="p-3 rounded-md hover:bg-slate-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
+                <Link href="/contact" className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
                   Contact
                 </Link>
               </nav>
