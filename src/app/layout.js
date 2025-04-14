@@ -24,6 +24,7 @@ const dmSans = DM_Sans({
 export const metadata = {
   title: "Revive Edge",
   description: "Push through your limits. Never give up.",
+  metadataBase: new URL('https://revive-edge.webrizen.com'),
   openGraph: {
     title: "Revive Edge — Push through your limits. Never give up.",
     description: " Push through your limits. Never give up.",
@@ -42,8 +43,13 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Revive Edge",
-    description: " Push through your limits. Never give up.",
+    description: "Push through your limits. Never give up.",
     images: ["/og-image.jpg"],
+  },
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png'
   },
 };
 
