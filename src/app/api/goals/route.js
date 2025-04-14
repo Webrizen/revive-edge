@@ -1,37 +1,41 @@
 import { auth } from "@clerk/nextjs/server";
 import connectToDB from "@/lib/db";
+import Goal from "@/lib/models/Goal";
 
 export async function GET(req) {
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
-  const client = await connectToDB;
-  const db = client.db("revive_edge");
-
-  const goals = await db.collection("goals").find({ userId }).toArray();
-  return Response.json(goals);
+  try {
+    await connectToDB();
+    const goals = await Goal.find({ userId });
+    return Response.json(goals);
+  } catch (err) {
+    console.error("[GET GOALS ERROR]", err);
+    return new Response("Internal Server Error", { status: 500 });
+  }
 }
 
 export async function POST(req) {
-    const { userId } = await auth();
+  const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
-  const body = await req.json();
-  const { title, description, deadline } = body;
+  try {
+    await connectToDB();
+    const body = await req.json();
+    const { title, description, deadline } = body;
 
-  const client = await connectToDB;
-  const db = client.db("revive_edge");
+    const newGoal = await Goal.create({
+      userId,
+      title,
+      description,
+      deadline: deadline || null,
+      completed: false,
+    });
 
-  const newGoal = {
-    userId,
-    title,
-    description,
-    deadline: deadline || null,
-    completed: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
-
-  const result = await db.collection("goals").insertOne(newGoal);
-  return Response.json({ insertedId: result.insertedId });
+    return Response.json({ insertedId: newGoal._id });
+  } catch (err) {
+    console.error("[POST GOAL ERROR]", err);
+    return new Response("Internal Server Error", { status: 500 });
+  }
 }
