@@ -24,7 +24,7 @@ const mockGiveups = [
 export default async function DashboardPage() {
   const { userId } = await auth();
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/goals`,
+    `${process.env.NEXT_PUBLIC_URL}/api/goals/user/${userId}`,
     { cache: "no-store" },
     { next: { revalidate: 30 } }
   );
