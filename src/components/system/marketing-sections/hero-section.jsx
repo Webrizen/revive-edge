@@ -6,9 +6,9 @@ import Link from "next/link";
 import { Spectral, Outfit } from "next/font/google";
 
 const outfit = Outfit({
-    subsets: ["latin"],
-    weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-    display: "swap",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 export default function HeroSection() {
@@ -34,7 +34,7 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      <div className="absolute inset-0 bg-[url('/logo.png')] bg-[length:50px_50px] opacity-[0.03]" />
+      <div className="absolute inset-0 dark:bg-[url('/logo.png')] bg-[length:50px_50px] opacity-[0.03]" />
 
       <motion.div
         style={{ y, opacity }}
@@ -68,7 +68,8 @@ export default function HeroSection() {
         >
           Revive Edge is here to motivate you when you feel like giving up,
           visualizing the future you're working towards and keeping you on
-          track. - AI talks(voice), shows and reminds you of your goals and dreams.
+          track. - It talks(voice), shows and reminds you of your goals and
+          dreams.
         </motion.p>
 
         <motion.div
@@ -91,11 +92,14 @@ export default function HeroSection() {
           </Link>
         </motion.div>
 
+        {/* Video */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="mt-20 max-w-5xl mx-auto h-48"
+          style={{
+            scale: useTransform(scrollYProgress, [0, 0.6], [1, 1.4]),
+            opacity: useTransform(scrollYProgress, [0, 0.9, 1], [1, 0.7, 0]),
+          }}
+          transition={{ duration: 0.5 }}
+          className="mt-20 max-w-5xl mx-auto h-[50vh]"
         >
           <div className="relative w-full aspect-video rounded-xl overflow-hidden border-4 dark:border-zinc-800 border-zinc-200 shadow-2xl shadow-indigo-900/20">
             <div className="absolute w-full h-full inset-0 dark:bg-zinc-900 bg-zinc-100 flex items-center justify-center">
