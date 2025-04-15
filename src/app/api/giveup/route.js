@@ -1,20 +1,16 @@
 import { auth } from "@clerk/nextjs/server";
 import connectToDB from "@/lib/db";
 import GiveUpEvent from "@/lib/models/GiveUpEvent";
-import { ElevenLabsClient } from "elevenlabs";
 import * as fs from "node:fs";
 import path from "path";
 import { randomUUID } from "crypto";
 import { GoogleGenAI } from "@google/genai";
 
-const elevenlabs = new ElevenLabsClient({
-  apiKey: process.env.ELEVENLABS_API_KEY,
-});
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 async function getGeminiSummary(goal, reason) {
   try {
-    const prompt = `Someone is giving up on their goal. \nGoal: ${goal}\nReason: ${reason}\nWrite a brutally honest, psychologically manipulative but motivating message.\nEnd with a mic-drop style challenge. talk like kiyotaka ayanokoji from classroom of the elite.`;
+    const prompt = `Someone is giving up on their goal. \nGoal: ${goal}\nReason: ${reason}\nWrite a brutally honest, psychologically manipulative but motivating message.\nEnd with a mic-drop style challenge. talk like kiyotaka ayanokoji from classroom of the elite. speak less than 10 sentances!`;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
@@ -28,39 +24,6 @@ async function getGeminiSummary(goal, reason) {
   } catch (error) {
     console.error("Error in getGeminiSummary:", error);
     throw new Error(`Gemini summary generation failed: ${error.message}`);
-  }
-}
-
-async function generateAudioFromText(text) {
-  try {
-    const audioStream = await elevenlabs.generate({
-      voiceId: "WGINef1wh4Hi6O62bfO8",
-      text,
-      model_id: "eleven_multilingual_v2",
-      voice_settings: {
-        stability: 0.3,
-        similarity_boost: 0.8,
-      },
-    });
-
-    // --- Consume the stream into a Buffer ---
-    const chunks = [];
-    for await (const chunk of audioStream) {
-       // The chunks should already be Buffers, but ensure it
-       chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    }
-    const buffer = Buffer.concat(chunks);
-
-    // Now convert the complete buffer to base64
-    const audioBase64 = buffer.toString("base64");
-    // Ensure the MIME type matches the output format (e.g., audio/mp3 if you requested mp3)
-    const audioUrl = `data:audio/mpeg;base64,${audioBase64}`;
-
-    return audioUrl;
-
-  } catch (err) {
-    console.error("Audio generation failed:", err);
-    return null;
   }
 }
 
@@ -120,7 +83,6 @@ export async function POST(req) {
 
     const aiResponse = await getGeminiSummary(goal, reason);
     const imageUrl = await generateImage(goal, reason);
-    const audioUrl = await generateAudioFromText(aiResponse);
 
     const event = await GiveUpEvent.create({
       userId,
@@ -128,15 +90,13 @@ export async function POST(req) {
       reason,
       aiResponse,
       imageUrl,
-      audioUrl,
       triggeredAt: new Date(),
     });
 
     return Response.json({
       insertedId: event._id,
       aiResponse,
-      imageUrl,
-      audioUrl,
+      imageUrl
     });
   } catch (err) {
     console.error("POST /giveup fatal error:", err);

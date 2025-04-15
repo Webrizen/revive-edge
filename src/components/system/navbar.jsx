@@ -135,10 +135,31 @@ const Navbar = () => {
 
         <div className="flex items-center gap-2">
           {isSignedIn ? (
-            <UserButton />
+            <>
+              <Link
+                href="/dashboard"
+                className="relative px-4 py-2 text-sm mr-2 overflow-hidden font-medium text-gray-600 bg-gray-100 border dark:border-zinc-500 border-gray-100 rounded-full shadow-inner group"
+              >
+                <span className="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-gray-600 group-hover:w-full ease"></span>
+                <span className="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-gray-600 group-hover:w-full ease"></span>
+                <span className="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+                <span className="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-gray-600 group-hover:h-full ease"></span>
+                <span className="absolute inset-0 w-full h-full duration-300 delay-300 bg-gray-900 opacity-0 group-hover:opacity-100"></span>
+                <span className="relative transition-colors duration-300 delay-200 group-hover:text-white ease">
+                  Dashboard
+                </span>
+              </Link>
+              <UserButton />
+            </>
           ) : (
-            <Button className="bg-indigo-600 hover:bg-indigo-500 text-indigo-50" radius="full">
-              <Link href="/auth/sign-in" className="flex items-center justify-center w-full h-full">
+            <Button
+              className="bg-indigo-600 hover:bg-indigo-500 text-indigo-50"
+              radius="full"
+            >
+              <Link
+                href="/auth/sign-in"
+                className="flex items-center justify-center w-full h-full"
+              >
                 Login
               </Link>
             </Button>
@@ -161,7 +182,11 @@ const Navbar = () => {
                 stroke="currentColor"
                 className="w-4 h-4"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 9h16.5m-16.5 6.75h16.5"
+                />
               </svg>
             </SheetTrigger>
             <SheetContent className="bg-white dark:bg-black border-l-zinc-100/30">
@@ -186,13 +211,22 @@ const Navbar = () => {
                     </p>
                   </Link>
                 ))}
-                <Link href="/pricing" className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
+                <Link
+                  href="/pricing"
+                  className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+                >
                   Pricing
                 </Link>
-                <Link href="/about" className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
+                <Link
+                  href="/about"
+                  className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+                >
                   About
                 </Link>
-                <Link href="/contact" className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]">
+                <Link
+                  href="/contact"
+                  className="p-3 rounded-md hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)]"
+                >
                   Contact
                 </Link>
               </nav>

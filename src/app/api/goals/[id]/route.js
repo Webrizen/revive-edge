@@ -5,13 +5,12 @@ import { isValidObjectId } from "mongoose";
 
 export async function GET(req, { params }) {
   const { userId } = await auth();
+  const { id } = await params;
   if (!userId) return new Response("Unauthorized", { status: 401 });
-
-  const goalId = await params.id;
-  if (!isValidObjectId(goalId)) return new Response("Invalid ID", { status: 400 });
+  if (!isValidObjectId(id)) return new Response("Invalid ID", { status: 400 });
 
   await connectToDB();
-  const goal = await Goal.findOne({ _id: goalId, userId });
+  const goal = await Goal.findOne({ _id: id, userId });
 
   if (!goal) return new Response("Not found", { status: 404 });
 
@@ -21,8 +20,8 @@ export async function GET(req, { params }) {
 export async function PATCH(req, { params }) {
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
-
-  const goalId = params.id;
+  const { id } = await params;
+  const goalId = id;
   if (!isValidObjectId(goalId)) return new Response("Invalid ID", { status: 400 });
 
   const updates = await req.json();
@@ -42,8 +41,8 @@ export async function PATCH(req, { params }) {
 export async function DELETE(req, { params }) {
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
-
-  const goalId = params.id;
+  const { id } = await params;
+  const goalId = id;
   if (!isValidObjectId(goalId)) return new Response("Invalid ID", { status: 400 });
 
   await connectToDB();

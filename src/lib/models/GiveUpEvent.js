@@ -6,8 +6,7 @@ const GiveUpEventSchema = new mongoose.Schema({
     reason: String,
     triggeredAt: { type: Date, default: Date.now },
     aiResponse: String,
-    imageUrl: String,
-    audioUrl: String,
+    imageUrl: String
   });
   
   export default mongoose.models.GiveUpEvent || mongoose.model('GiveUpEvent', GiveUpEventSchema);  
