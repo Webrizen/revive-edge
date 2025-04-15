@@ -54,7 +54,7 @@ export default function OnboardingForm({ userId }) {
   }
 
   if (loading) {
-    return <Skeleton className="h-80 w-full rounded-xl" />;
+    return <Skeleton className="h-full w-full rounded-xl" />;
   }
 
   return (

@@ -1,43 +1,39 @@
 import { auth } from "@clerk/nextjs/server";
 import connectToDB from "@/lib/db";
-import { GoogleGenAI } from "@google/genai";
+import GiveUpEvent from "@/lib/models/GiveUpEvent";
 import { ElevenLabsClient } from "elevenlabs";
 import * as fs from "node:fs";
 import path from "path";
 import { randomUUID } from "crypto";
+import { GoogleGenAI } from "@google/genai";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
-
-const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-const elevenlabs = new ElevenLabsClient({ apiKey: ELEVENLABS_API_KEY });
+const elevenlabs = new ElevenLabsClient({
+  apiKey: process.env.ELEVENLABS_API_KEY,
+});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 async function getGeminiSummary(goal, reason) {
   try {
-    const response = await ai.models.generateContentStream({
-      model: "gemini-1.5-flash",
-      contents: `Someone is giving up on their goal. 
-Goal: ${goal}
-Reason: ${reason}
-Write a brutally honest, psychologically manipulative but motivating message.
-End with a mic-drop style challenge. talk like kiyotaka ayanokoji from classroom of the elite he who possesses a sagacious ability to read the emotions of people around him with pinpoint accuracy and either helps or destroys them.`,
+    const prompt = `Someone is giving up on their goal. \nGoal: ${goal}\nReason: ${reason}\nWrite a brutally honest, psychologically manipulative but motivating message.\nEnd with a mic-drop style challenge. talk like kiyotaka ayanokoji from classroom of the elite.`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+      config: {
+        systemInstruction: "kiyotaka ayanokoji from classroom of the elite. your name is ReviveEdge",
+      },
     });
 
-    let summary = "";
-    for await (const chunk of response) {
-      summary += chunk.candidates[0]?.content?.parts[0]?.text || "";
-    }
-
-    return summary.trim() || "No summary available.";
-  } catch (err) {
-    console.error("Gemini summary generation failed:", err);
-    return "Even AI failed to motivate you. Maybe that’s your real problem.";
+    return response?.text?.trim() || response.trim() || "No message available.";
+  } catch (error) {
+    console.error("Error in getGeminiSummary:", error);
+    throw new Error(`Gemini summary generation failed: ${error.message}`);
   }
 }
 
 async function generateAudioFromText(text) {
   try {
-    const audio = await elevenlabs.textToSpeech.convert({
+    const audioStream = await elevenlabs.generate({
       voiceId: "WGINef1wh4Hi6O62bfO8",
       text,
       model_id: "eleven_multilingual_v2",
@@ -47,11 +43,21 @@ async function generateAudioFromText(text) {
       },
     });
 
-    const buffer = Buffer.from(await audio.arrayBuffer());
+    // --- Consume the stream into a Buffer ---
+    const chunks = [];
+    for await (const chunk of audioStream) {
+       // The chunks should already be Buffers, but ensure it
+       chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    }
+    const buffer = Buffer.concat(chunks);
+
+    // Now convert the complete buffer to base64
     const audioBase64 = buffer.toString("base64");
+    // Ensure the MIME type matches the output format (e.g., audio/mp3 if you requested mp3)
     const audioUrl = `data:audio/mpeg;base64,${audioBase64}`;
 
     return audioUrl;
+
   } catch (err) {
     console.error("Audio generation failed:", err);
     return null;
@@ -60,38 +66,39 @@ async function generateAudioFromText(text) {
 
 async function generateImage(goal, reason) {
   try {
-    const contents = `Generate image of a dramatic, highly detailed digital painting that symbolizes perseverance. 
-The user is struggling with the goal: "${goal}", because "${reason}". 
-Show a powerful metaphorical scene of rising from darkness, futuristic, cinematic lighting, ultra-quality.`;
-
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash-exp-image-generation",
-      contents: contents,
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `Generate image of a dramatic, highly detailed digital painting that symbolizes perseverance.\nThe user is struggling with the goal: \"${goal}\", because \"${reason}\".\nShow a powerful metaphorical scene of rising from darkness, futuristic, cinematic lighting, ultra-quality.`,
+            },
+          ],
+        },
+      ],
       config: {
         responseModalities: ["Text", "Image"],
       },
     });
 
-    for (const part of response.candidates[0].content.parts) {
+    for (const part of response.candidates?.[0]?.content?.parts || []) {
       if (part.text) {
         console.log("Gemini returned text instead of image:", part.text);
         return null;
       } else if (part.inlineData) {
-        const imageData = part.inlineData.data;
-        const buffer = Buffer.from(imageData, "base64");
-
-        // Ensure directory exists
-        const geminiDir = path.join(process.cwd(), "public", "gemini");
-        if (!fs.existsSync(geminiDir)) fs.mkdirSync(geminiDir);
+        const buffer = Buffer.from(part.inlineData.data, "base64");
+        const dir = path.join(process.cwd(), "public", "gemini");
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
         const fileName = `gemini-${randomUUID()}.png`;
-        const filePath = path.join(geminiDir, fileName);
+        const filePath = path.join(dir, fileName);
         fs.writeFileSync(filePath, buffer);
 
         return `/gemini/${fileName}`;
       }
     }
-
     return null;
   } catch (err) {
     console.error("Image generation failed:", err);
@@ -104,37 +111,32 @@ export async function POST(req) {
     const { userId } = await auth();
     if (!userId) return new Response("Unauthorized", { status: 401 });
 
-    const body = await req.json();
-    const { goal, reason } = body;
-
+    const { goal, reason } = await req.json();
     if (!goal || !reason) {
       return new Response("Missing goal or reason", { status: 400 });
     }
 
-    const summary = await getGeminiSummary(goal, reason);
+    await connectToDB();
+
+    const aiResponse = await getGeminiSummary(goal, reason);
     const imageUrl = await generateImage(goal, reason);
-    const audioUrl = await generateAudioFromText(summary);
+    const audioUrl = await generateAudioFromText(aiResponse);
 
-    const client = await connectToDB;
-    const db = client.db("revive_edge");
-
-    const giveUpEvent = {
+    const event = await GiveUpEvent.create({
       userId,
       goal,
       reason,
-      aiResponse: summary,
+      aiResponse,
       imageUrl,
       audioUrl,
       triggeredAt: new Date(),
-    };
-
-    const insertResult = await db
-      .collection("giveupevents")
-      .insertOne(giveUpEvent);
+    });
 
     return Response.json({
-      insertedId: insertResult.insertedId,
-      aiResponse: summary,
+      insertedId: event._id,
+      aiResponse,
+      imageUrl,
+      audioUrl,
     });
   } catch (err) {
     console.error("POST /giveup fatal error:", err);
