@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🧠 Revive Edge – Don't You Dare Give Up
 
-## Getting Started
+**Built for Next.js Global Hackathon 2025**
 
-First, run the development server:
+Revive Edge is a psychological slap-in-the-face platform for people who are on the verge of giving up on their goals. It’s powered by AI-generated motivation that hits hard — combining manipulative summaries, cinematic imagery, and voice messages.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🔥 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- ⚡ **One-click "Give Up" button**
+- 🧠 Brutally honest AI motivation (Gemini 1.5 Flash)
+- 🖼️ Cinematic image generation (Gemini Vision)
+- 🎧 Spoken audio feedback (ElevenLabs API yet to apply)
+- 🔐 Auth with Clerk
+- ☁️ Firestore + MongoDB hybrid data flow
+- ⚙️ Built with Next.js 15, App Router, Server Actions
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠️ Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 15 (App Router)
+- **AI**: Google Gemini, ElevenLabs
+- **Auth**: Clerk
+- **Database**: MongoDB (GiveUpEvents)
+- **Storage**: Local / public dir for image generation
+- **UI**: TailwindCSS + HeroUI
 
-## Learn More
+## 💡 Flow
 
-To learn more about Next.js, take a look at the following resources:
+1. User clicks **“Give Up”**
+2. Enters their goal + reason
+3. App generates:
+   - 🔥 Motivational text (Gemini)
+   - 🖼️ Custom symbolic image
+   - 🎧 Audio message via ElevenLabs
+4. Data is saved, response shown
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Vision
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A SaaS for dark days — where giving up triggers a personalized, manipulative, cinematic pep talk.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> "Even AI failed to motivate you? Maybe that's your real problem."  
+– Revive Edge
