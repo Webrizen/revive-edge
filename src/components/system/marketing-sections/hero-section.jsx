@@ -29,8 +29,8 @@ export default function HeroSection() {
     >
       <div className="absolute inset-0 dark:bg-zinc-950 bg-zinc-100 overflow-hidden">
         <motion.div style={{ scale }} className="absolute inset-0 opacity-30">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-indigo-900 blur-[120px]" />
-          <div className="absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-indigo-700 blur-[150px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-indigo-900 dark:blur-[120px] blur-[1200px]" />
+          <div className="absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-indigo-700 dark:blur-[150px] blur-[1200px]" />
         </motion.div>
       </div>
 

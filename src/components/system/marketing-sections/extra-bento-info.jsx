@@ -37,6 +37,7 @@ function BentoGrid() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, amount: 0.1 }}
+      
       className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"
     >
       {/* Large feature */}
@@ -162,7 +163,7 @@ function BentoGrid() {
 
 export default function ExtraBentoInfo() {
   return (
-    <section className="py-24 px-4 md:px-8 dark:bg-zinc-900 bg-zinc-50">
+    <section className="py-24 px-4 md:px-8 dark:bg-zinc-900 bg-zinc-50" id="how-it-works">
         <div className="max-w-7xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
