@@ -58,7 +58,7 @@ const Navbar = () => {
             alt="Revive Edge Logo"
             width={500}
             height={500}
-            className="h-full w-auto dark:invert"
+            className="h-full w-auto dark:filter-none invert"
           />
           <span className="md:block hidden whitespace-nowrap">Revive Edge</span>
         </Link>
