@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
+import ReviveEdge from "./revive-edge-";
 
 export default function GiveUpButton({ goalId }) {
   const [goal, setGoal] = useState(null);
@@ -49,7 +50,7 @@ export default function GiveUpButton({ goalId }) {
           i++;
         } else {
           clearInterval(typingEffect);
-  
+
           // Web Speech API - Speak after typing ends
           if (typeof window !== "undefined" && window.speechSynthesis) {
             const utterance = new SpeechSynthesisUtterance(aiResponse);
@@ -61,10 +62,10 @@ export default function GiveUpButton({ goalId }) {
           }
         }
       }, 20);
-  
+
       return () => clearInterval(typingEffect);
     }
-  }, [aiResponse]);  
+  }, [aiResponse]);
 
   const handleGiveUp = async () => {
     if (!reason.trim()) {
@@ -118,7 +119,7 @@ export default function GiveUpButton({ goalId }) {
   }
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-6 relative z-20">
       {/* Goal Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -179,40 +180,7 @@ export default function GiveUpButton({ goalId }) {
             "I Want to Give Up"
           )}
         </Button>
-
-        <Button
-          variant="secondary"
-          onClick={() => setShowMotivation(!showMotivation)}
-          size="lg"
-        >
-          <Sparkles className="mr-2 h-5 w-5" />
-          {showMotivation ? "Hide Motivation" : "Get Encouragement"}
-        </Button>
       </div>
-
-      {/* Motivation Section */}
-      <AnimatePresence>
-        {showMotivation && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <div className="p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl border border-green-200 dark:border-emerald-800/50">
-              <h3 className="text-xl font-bold text-green-800 dark:text-green-200 mb-3">
-                ✨ You've Got This! ✨
-              </h3>
-              <p className="text-green-700 dark:text-green-300">
-                Remember why you started this journey. Every challenge is an
-                opportunity to grow stronger. Take a deep breath and consider
-                giving it one more try. The view from the top will be worth it!
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* AI Response */}
       <AnimatePresence>
@@ -255,20 +223,6 @@ export default function GiveUpButton({ goalId }) {
                   />
                 </motion.div>
               )}
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="text-center mt-6"
-            >
-              <Button
-                variant="outline"
-                className="border-green-500 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30"
-                onClick={() => setShowMotivation(true)}
-              >
-                Still feeling unsure? Let's talk more
-              </Button>
             </motion.div>
           </>
         )}

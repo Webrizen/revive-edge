@@ -36,7 +36,7 @@ async function generateImage(goal, reason) {
           role: "user",
           parts: [
             {
-              text: `Generate image of a dramatic, highly detailed digital painting that symbolizes perseverance.\nThe user is struggling with the goal: \"${goal}\", because \"${reason}\".\nShow a powerful metaphorical scene of rising from darkness, futuristic, cinematic lighting, ultra-quality.`,
+              text: `Generate image of a realistic human, highly detailed aesthetic image that symbolizes perseverance.\nThe person is struggling with the goal: \"${goal}\", because \"${reason}\".\nShow a powerful metaphorical scene of rising from darkness, futuristic, cinematic lighting, ultra-quality.`,
             },
           ],
         },

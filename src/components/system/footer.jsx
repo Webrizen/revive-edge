@@ -45,7 +45,7 @@ export default function Footer() {
                   alt="Revive Edge Logo"
                   width={500}
                   height={500}
-                  className="h-10 w-10 dark:invert mr-2"
+                  className="h-10 w-10 dark:filter-none invert mr-2"
                 />
                 <span className="text-2xl font-bold dark:text-white text-black">
                   Revive Edge
