@@ -6,6 +6,8 @@ const GoalSchema = new mongoose.Schema(
     title: { type: String, required: true },
     description: String,
     deadline: Date,
+    giveUpCount: { type: Number, default: 0 },    
+    lastGiveUpAt: Date, 
     completed: { type: Boolean, default: false },
   },
   { timestamps: true }

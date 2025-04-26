@@ -51,6 +51,7 @@ export const metadata = {
     description:
       "When emotion fails, logic remains. Hit 'Give Up'. Let Revive Edge manipulate your weakness into progress.",
     images: ["https://revive-edge.vercel.app/og-image.png"],
+    site: "@shadow_jsx",
   },
   metadataBase: new URL("https://revive-edge.vercel.app"),
   robots: {
