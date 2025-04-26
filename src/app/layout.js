@@ -35,7 +35,7 @@ export const metadata = {
     siteName: "Revive Edge",
     images: [
       {
-        url: "https://revive-edge.vercel.app/og-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Revive Edge – The Point Where You Don't Break",
@@ -50,7 +50,7 @@ export const metadata = {
     creator: "@shadow_jsx",
     description:
       "When emotion fails, logic remains. Hit 'Give Up'. Let Revive Edge manipulate your weakness into progress.",
-    images: ["https://revive-edge.vercel.app/og-image.png"],
+    images: ["/og-image.png"],
     site: "@shadow_jsx",
   },
   metadataBase: new URL("https://revive-edge.vercel.app"),
