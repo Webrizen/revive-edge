@@ -105,17 +105,6 @@ export async function PATCH(req, { params }) {
   }
 }
 
-async function updateUserLevel(userId) {
-  const workLogs = await WorkLog.find({ userId });
-  const totalHours = workLogs.reduce(
-    (sum, log) => sum + log.durationInHours,
-    0
-  );
-  const levelsGained = Math.min(Math.floor(totalHours / 24), 100);
-
-  await User.findOneAndUpdate({ clerkId: userId }, { level: levelsGained });
-}
-
 export async function DELETE(req, { params }) {
   try {
     await connectToDB();
