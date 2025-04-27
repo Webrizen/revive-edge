@@ -44,28 +44,21 @@ export default async function DashboardPage() {
 
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
           {goals.map((goal, index) => (
-            <div
-              key={index}
-              className="rounded-2xl p-6 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 border-2 border-zinc-200 dark:border-zinc-800 flex justify-between flex-col"
-            >
-              <h2 className="text-2xl font-semibold text-indigo-700 dark:text-indigo-400">
-                {goal.title || "No Title"}
-              </h2>
-              <p className="mt-2 text-zinc-700 dark:text-zinc-300">
-                {goal.description || "No description provided."}
-              </p>
-              {goal.deadline && (
-                <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
-                  Deadline: {new Date(goal.deadline).toLocaleDateString()}
+            <Link key={index} href={`/dashboard/give-up/${goal._id}`}>
+              <div className="rounded-2xl p-6 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 border-2 border-zinc-200 dark:border-zinc-800 flex justify-between flex-col">
+                <h2 className="text-2xl font-semibold text-indigo-700 dark:text-indigo-400">
+                  {goal.title || "No Title"}
+                </h2>
+                <p className="mt-2 text-zinc-700 dark:text-zinc-300">
+                  {goal.description || "No description provided."}
                 </p>
-              )}
-              <Link
-                href={`/dashboard/give-up/${goal._id}`}
-                className="flex items-center h-12 w-min whitespace-nowrap mt-4 px-6 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white border border-indigo-600"
-              >
-                Give Up
-              </Link>
-            </div>
+                {goal.deadline && (
+                  <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+                    Deadline: {new Date(goal.deadline).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            </Link>
           ))}
         </div>
       </section>

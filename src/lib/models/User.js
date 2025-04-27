@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-  clerkId: { type: String, required: true, unique: true },
+  clerkId: { type: String, required: true, unique: true, index: true },
   email: String,
   name: String,
   plan: { type: String, enum: ["free", "pro"], default: "free" },
@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  level: { type: Number, default: 0 }, 
   createdAt: { type: Date, default: Date.now },
 });
 

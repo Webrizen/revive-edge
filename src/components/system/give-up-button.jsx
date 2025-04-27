@@ -193,10 +193,6 @@ export default function GiveUpButton({ goalId }) {
               className="mt-8 grid md:grid-cols-2 grid-cols-1 gap-6"
             >
               <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl shadow-sm border border-purple-200 dark:border-purple-800/50">
-                <h3 className="text-2xl font-bold text-purple-800 dark:text-purple-200 mb-4 flex items-center gap-2">
-                  <Sparkles className="h-6 w-6" />
-                  Your Personal AI Coach Says:
-                </h3>
                 <div className="prose dark:prose-invert max-w-none">
                   <p className="whitespace-pre-wrap text-gray-900 dark:text-gray-200 text-lg leading-relaxed">
                     {typedResponse}
