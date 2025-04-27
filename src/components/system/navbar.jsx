@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { MoonIcon, SunIcon, Volume2Icon, VolumeXIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -27,6 +27,46 @@ import { UserButton, useAuth } from "@clerk/nextjs";
 const Navbar = () => {
   const { setTheme, theme } = useTheme();
   const { isSignedIn } = useAuth();
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  // Initialize audio on component mount
+  useEffect(() => {
+    audioRef.current = new Audio('/just-relax.mp3');
+    audioRef.current.loop = true;
+    
+    // Start playing
+    const playAudio = async () => {
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (err) {
+        console.error("Audio playback failed:", err);
+        setIsPlaying(false);
+      }
+    };
+    
+    playAudio();
+
+    // Cleanup on unmount
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   const links = [
     {
@@ -134,6 +174,17 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Audio control button */}
+          <Button
+            variant="ghost"
+            radius="full"
+            className="!min-h-[35px] !min-w-[35px]"
+            onClick={toggleAudio}
+            aria-label={isPlaying ? "Mute audio" : "Unmute audio"}
+          >
+            {isPlaying ? <Volume2Icon size={18} /> : <VolumeXIcon size={18} />}
+          </Button>
+
           {isSignedIn ? (
             <>
               <Link
@@ -170,7 +221,7 @@ const Navbar = () => {
             className="!min-h-[35px] !min-w-[35px]"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
-            {theme === "light" ? <MoonIcon /> : <SunIcon />}
+            {theme === "light" ? <MoonIcon size={18} /> : <SunIcon size={18} />}
           </Button>
           <Sheet>
             <SheetTrigger className="w-10 h-10 md:hidden flex justify-center items-center hover:bg-zinc-100 dark:hover:bg-[rgba(225,225,225,0.1)] rounded">
