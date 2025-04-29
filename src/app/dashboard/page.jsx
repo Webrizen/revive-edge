@@ -45,7 +45,16 @@ export default async function DashboardPage() {
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
           {goals.map((goal, index) => (
             <Link key={index} href={`/dashboard/give-up/${goal._id}`}>
-              <div className="rounded-2xl p-6 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 border-2 border-zinc-200 dark:border-zinc-800 flex justify-between flex-col">
+              <div className="rounded-2xl p-6 bg-zinc-100 dark:bg-zinc-900 transition-all duration-300 border-2 border-zinc-200 dark:border-zinc-800 flex justify-between flex-col h-full">
+                {goal.completed ? (
+                  <span className="my-4 px-3 py-1 w-min whitespace-nowrap rounded-full text-xs text-green-500 dark:text-green-400 bg-green-50/20 border border-green-500/20">
+                    Already Completed.
+                  </span>
+                ) : (
+                  <span className="my-4 px-3 py-1 w-min whitespace-nowrap rounded-full text-xs text-orange-500 dark:text-orange-400 bg-orange-50/20 border border-orange-500/20">
+                    In Progress
+                  </span>
+                )}
                 <h2 className="text-2xl font-semibold text-indigo-700 dark:text-indigo-400">
                   {goal.title || "No Title"}
                 </h2>
